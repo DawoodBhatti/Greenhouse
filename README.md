@@ -8,7 +8,7 @@ The components in use by the system are heaters, fans and lighting. The sensor i
 Installation:
 This code is still a working project, however it is currently run on a Raspberry Pi Zero with connected hardware. The following are required:
 
-A Raspberry Pi (Zero) with Debian Buster OS installed.  Modules in Python: influxdb, Adafruit_DHT 
+Raspberry Pi (Zero) with Debian Buster OS installed.  Modules in Python: influxdb, Adafruit_DHT 
 
 Credits:
 Ali Bhatti 
