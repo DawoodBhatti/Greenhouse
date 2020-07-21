@@ -25,7 +25,7 @@ def InfluxDB_data_upload(location="default", humidity=[12,31,14,15,16,17,13], te
 
     #connect to InfluxDB, connect to database specified 
     print("connecting to database client... logging in...")
-    client = InfluxDBClient(host='localhost', port=8086, username='admin', password='<7725pi>')
+    client = InfluxDBClient(host='localhost', port=8086, username='******', password='<******>')
     print("using database: " + database_name)
     client.switch_database(database_name)
 
