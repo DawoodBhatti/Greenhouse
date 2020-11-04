@@ -11,7 +11,7 @@ This code is still a working project, however it is currently run on a Raspberry
 Raspberry Pi (Zero) with Debian Buster OS installed.  Modules in Python: influxdb, Adafruit_DHT, grafana
 
 Credits:
-Ali Bhatti 
+Dawood-Ali Bhatti 
 
 License:
 gpl-3.0
