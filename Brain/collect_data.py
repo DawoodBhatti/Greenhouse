@@ -13,10 +13,10 @@ def collect_data(sensor_pin):
     y1 = []
     y2 = []
     run = 0
-    data_points = 30
+    data_points = 15
     date = strftime("%d_%m_%Y")
 
-    #run the loop to collect 30 data points
+    #run the loop to collect 15 data points
     while run < data_points:
         if strftime("%d_%m_%Y") != date:
             break
