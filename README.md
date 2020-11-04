@@ -1,4 +1,4 @@
-# auto-greenhouse
+# Greenhouse
 
 Description:
 This project is to create a control system for a raspberry-pi zero which automates component operation based on sensor input and to display live data in a 24hr period. 
