@@ -34,7 +34,7 @@ def collect_data(sensor_pin):
         run+=1
 
     #write to file
-    filename = "/home/pi/projex/Greenhouse/Sensor Data/" + date + ".txt"
+    filename = "/home/pi/projex/Greenhouse Data/" + date + ".txt"
     f = open (filename, "a+")
     for i in range(len(t1)):
         f.write(str(t1[i]) + "\t" + str(y1[i]) + "\t" + str(y2[i]) + "\n")
