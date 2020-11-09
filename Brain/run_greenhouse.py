@@ -22,7 +22,6 @@ def run_greenhouse():
     acclimatise_from = datetime.date(2020,10,1)
     component_activation = True
 
-
     #setup pins for useage
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(heater_pin,GPIO.OUT)
@@ -180,7 +179,5 @@ def sleep_greenhouse(pins, LED_pin):
     GPIO.cleanup()
     
     return None
-    
-operate_greenhouse()
 
-
+run_greenhouse()
