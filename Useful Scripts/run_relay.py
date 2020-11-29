@@ -12,36 +12,23 @@ def run_relay():
     # GPIO.setmode(GPIO.BOARD)
     # but you can't have both, so only use one.
 
-    GPIO.setup(6, GPIO.OUT)
-    GPIO.output(6, GPIO.HIGH)
+    #using GPIO pin 13 to activate LED
+    #GPIO.setup(13, GPIO.OUT)
+    #GPIO.output(13, GPIO.HIGH)
 
-    GPIO.setup(13, GPIO.OUT)
-    GPIO.output(13, GPIO.HIGH)
+    #using GPIO pin 19 to active heaters
+    #GPIO.setup(19, GPIO.OUT)
+    #GPIO.output(19, GPIO.HIGH)
 
-    GPIO.setup(19, GPIO.OUT)
-    GPIO.output(19, GPIO.HIGH)
-
+    #using GPIO pin 26 to activate fans
     GPIO.setup(26, GPIO.OUT)
     GPIO.output(26, GPIO.HIGH)
 
     try:
         GPIO.output(26, GPIO.LOW)
         print("relay 1 on")
-        time.sleep(3)
+        time.sleep(10)
 
-        GPIO.output(19, GPIO.LOW)
-        print("relay 2 on")
-        time.sleep(3)
-
-        GPIO.output(13, GPIO.LOW)
-        print("relay 3 on")
-        time.sleep(3)
-
-        GPIO.output(6, GPIO.LOW)
-        print("relay 4 on")
-        time.sleep(3)
-
-        time.sleep(3)
         GPIO.cleanup()
         print("all off")
 

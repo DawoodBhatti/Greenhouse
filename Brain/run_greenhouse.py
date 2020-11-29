@@ -14,7 +14,7 @@ def run_greenhouse():
     humidity_limit = 80
     temperature_limit = 30
     heater_pin = 12
-    fan_pin = 13
+    fan_pin = 26
     LED_pin = 14
     sensor_pin = 4  
     sensor_name = "greenhouse_sensor"
