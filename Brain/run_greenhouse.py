@@ -2,25 +2,34 @@
 
 import RPi.GPIO as GPIO
 import datetime
+import configparser
 from data_processing import data_processing
 
 #main script which can be run to take sensor readings, but also to 
 #control fans, heaters and LED components in the greenhouse
 def run_greenhouse():
 
-    #define variables, GPIO pin useage and GPIO numbering convention
-    humidity_average = 0
-    temperature_average = 0
-    humidity_limit = 80
-    temperature_limit = 30
-    heater_pin = 12
-    fan_pin = 26
-    LED_pin = 14
-    sensor_pin = 4  
-    sensor_name = "greenhouse_sensor"
-    LED_scheme = "acclimatise"
-    acclimatise_from = datetime.date(2020,10,1)
-    component_activation = True
+    #import variables from config.ini
+    config = configparser.ConfigParser()
+    path = "C:/Users/dabha/Documents/GitHub/Greenhouse/Brain/"    
+    file = "config.ini"
+    config.read((path+file))
+
+    #read variables, define GPIO pin useage and define GPIO numbering convention
+    humidity_average     =   float(config['devpi01_greenhouse']['humidity_average'])
+    temperature_average  =   float(config['devpi01_greenhouse']['temperature_average'])
+    humidity_limit       =   float(config['devpi01_greenhouse']['humidity_limit'])
+    temperature_limit    =   float(config['devpi01_greenhouse']['temperature_limit'])
+    heater_pin           =   int(config['devpi01_greenhouse']['heater_pin'])
+    fan_pin              =   int(config['devpi01_greenhouse']['fan_pin'])
+    LED_pin              =   int(config['devpi01_greenhouse']['LED_pin'])
+    sensor_pin           =   int(config['devpi01_greenhouse']['sensor_pin'])
+    sensor_name          =   str(config['devpi01_greenhouse']['sensor_name'])
+    LED_scheme           =   str(config['devpi01_greenhouse']['LED_scheme'])
+    acclimatise_from     =   datetime.date(int(config['devpi01_greenhouse']['acclimatise_from_year']),
+                                           int(config['devpi01_greenhouse']['acclimatise_from_month']),
+                                           int(config['devpi01_greenhouse']['acclimatise_from_day']))
+    component_activation =   config.getboolean('devpi01_greenhouse', 'component_activation')
 
     #setup pins for useage
     GPIO.setmode(GPIO.BCM)
