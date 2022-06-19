@@ -4,7 +4,7 @@ from time import time, sleep
 
 #define variables, sensor type and GPIO pin being used
 sensor = Adafruit_DHT.DHT22
-pin = 4
+pin = 24
 run = True
 startTime = time()
 

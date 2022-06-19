@@ -26,7 +26,7 @@ def data_processing(sensor_pin, sensor_name):
     incorrect results. Such as 3000% humidity and a 10c tempeature result.
     Not sure how to improve these just yet. Could look up statistical scrubbing methods"""
 
-    #upload data to InfluxDB
-    InfluxDB_data_upload(sensor_name, humidity, temperature, time_UTC)
+    #upload data to InfluxDB - ignoring this for now. will run data display through PC
+    #InfluxDB_data_upload(sensor_name, humidity, temperature, time_UTC)
 
     return humidity_average, temperature_average
