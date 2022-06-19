@@ -26,7 +26,7 @@ def run_greenhouse():
 
     #setup pins for useage
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(heater_pin,GPIO.OUT)
+    GPIO.setup(humidifier_pin,GPIO.OUT)
     GPIO.setup(fan_pin, GPIO.OUT)
     #GPIO.setup(LED_pin, GPIO.OUT)
 
@@ -139,16 +139,19 @@ def LED_regular_scheme(LED_pin, times, dates):
 #determine if activation of fans and heating is required and activate components for 2 and a half minutes
 def temperature_and_humidity_control(averages, limits, pins, active_time = 150):
     
-       """could optimise this code in future to employ a more intelligent solution: 
-       PID stuff thingys"""
+    """could optimise this code in future to employ a more intelligent solution: 
+    PID stuff thingys"""
     
     #unpack tuples
     temperature_average, humidity_average = averages
     temperature_limit_upper, humidity_limit_upper, humidity_limit_lower  = limits 
     humidifier_pin, fan_pin = pins
     
+    print("shroomhouse humidity: {humidity_average}:")
+    print("shroomhouse temperature: {temperature_average}:")
+    
     #check temperature and humidity value against limit values
-    #then decide whether to operate fan and heater
+    #then decide whether to operate fan an  d heater
     if temperature_average > temperature_limit_upper and humidity_average > humidity_limit_upper:
         print("temperature too high and humidity too high, fans on and humidifier off.")
         GPIO.output(fan_pin, GPIO.HIGH)
@@ -170,11 +173,12 @@ def temperature_and_humidity_control(averages, limits, pins, active_time = 150):
 def sleep_greenhouse(pins):
     """find out how to shutdown the greenhouse using python"""
 
+    print("sleeping all components...")
+
     humidifier_pin, fan_pin = pins
     
     GPIO.output(fan_pin, GPIO.LOW)
-    GPIO.output(fan_pin, GPIO.LOW)
-    GPIO.output(fan_pin, GPIO.LOW)
+    GPIO.output(humidifier_pin, GPIO.LOW)
    
     GPIO.cleanup()
     
