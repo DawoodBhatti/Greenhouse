@@ -2,6 +2,7 @@
 
 import RPi.GPIO as GPIO
 import datetime
+from time import sleep
 from data_processing import data_processing
 
 #main script which can be run to take sensor readings, but also to 
@@ -17,18 +18,13 @@ def run_greenhouse():
     #heater_pin = 12 #ignore heater stuff for now
     humidifier_pin = 19
     fan_pin = 26
-    #LED_pin = 14 #ignore LED stuff for now
     sensor_pin = 24  
     sensor_name = "greenhouse_sensor"
+    #LED_pin = 14 #ignore LED stuff for now
     #LED_scheme = "acclimatise"
     #acclimatise_from = datetime.date(2020,10,1)
-    component_activation = True
-
-    #setup pins for useage
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(humidifier_pin,GPIO.OUT)
-    GPIO.setup(fan_pin, GPIO.OUT)
     #GPIO.setup(LED_pin, GPIO.OUT)
+    component_activation = False #set to False for temperature reads only
 
     #get averaged, processed sensor data
     humidity_average, temperature_average = data_processing(sensor_pin, sensor_name)
@@ -43,9 +39,10 @@ def run_greenhouse():
         temperature_and_humidity_control(averages, limits, pins)
         #LED_control(LED_pin, LED_scheme, acclimatise_from)
     
-    #sleep all components at end of run
-    sleep(pins)
-
+    #for some reason using sleep() causes the pi to crash... avoiding for now.
+    
+    print("this run complete!")
+    
     return None
 
 #activate the lighting with acclimatise scheme or regular scheme
@@ -136,39 +133,6 @@ def LED_regular_scheme(LED_pin, times, dates):
     
     return None
 
-#determine if activation of fans and heating is required and activate components for 2 and a half minutes
-def temperature_and_humidity_control(averages, limits, pins, active_time = 150):
-    
-    """could optimise this code in future to employ a more intelligent solution: 
-    PID stuff thingys"""
-    
-    #unpack tuples
-    temperature_average, humidity_average = averages
-    temperature_limit_upper, humidity_limit_upper, humidity_limit_lower  = limits 
-    humidifier_pin, fan_pin = pins
-    
-    print("shroomhouse humidity: {humidity_average}:")
-    print("shroomhouse temperature: {temperature_average}:")
-    
-    #check temperature and humidity value against limit values
-    #then decide whether to operate fan an  d heater
-    if temperature_average > temperature_limit_upper and humidity_average > humidity_limit_upper:
-        print("temperature too high and humidity too high, fans on and humidifier off.")
-        GPIO.output(fan_pin, GPIO.HIGH)
-        GPIO.output(humidifier_pin, GPIO.LOW)
-    
-    elif temperature_average > temperature_limit_upper and humidity_average < humidity_limit_lower:
-        print("temperature too high and humidity too low, fans on and humidifier on.")
-        GPIO.output(fan_pin, GPIO.HIGH)
-        GPIO.output(humidifier_pin, GPIO.HIGH)
-    
-    elif humidity_average < humidity_limit:
-        print("humidity too low, fans off and humidifier on.")
-        GPIO.output(fan_pin, GPIO.LOW)
-        GPIO.output(humidifier_pin, GPIO.HIGH)
-    
-    return None
-
 #a method to turn off all component pins
 def sleep_greenhouse(pins):
     """find out how to shutdown the greenhouse using python"""
@@ -179,8 +143,57 @@ def sleep_greenhouse(pins):
     
     GPIO.output(fan_pin, GPIO.LOW)
     GPIO.output(humidifier_pin, GPIO.LOW)
-   
     GPIO.cleanup()
+    
+    return None
+
+#determine if activation of fans and heating is required and activate components
+def temperature_and_humidity_control(averages, limits, pins):
+    
+    """could optimise this code in future to employ a more intelligent solution: 
+    PID stuff thingys"""
+    
+    #unpack tuples
+    temperature_average, humidity_average = averages
+    temperature_limit_upper, humidity_limit_upper, humidity_limit_lower  = limits 
+    humidifier_pin, fan_pin = pins
+    
+    #setup pins for useage here because they seem to crash out when defined in main function above
+    #some weird interaction with the sensor function???
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(humidifier_pin, GPIO.OUT)
+    GPIO.output(humidifier_pin, GPIO.HIGH)
+    GPIO.setup(fan_pin, GPIO.OUT)
+    GPIO.output(fan_pin, GPIO.HIGH)
+    
+    print(f"shroomhouse humidity: {round(humidity_average, 2)} %")
+    print(f"shroomhouse temperature: {round(temperature_average, 2)} \u00b0C")
+    
+    #check temperature and humidity value against limit values
+    #then decide whether to operate fan and heater
+    if temperature_average > temperature_limit_upper and humidity_average > humidity_limit_upper:
+        print("temperature too high and humidity too high, fans on and humidifier off.")
+        GPIO.output(fan_pin, GPIO.LOW)
+        GPIO.output(humidifier_pin, GPIO.HIGH)
+    
+    elif temperature_average > temperature_limit_upper and humidity_average < humidity_limit_lower:
+        print("temperature too high and humidity too low, fans on and humidifier on.")
+        GPIO.output(fan_pin, GPIO.LOW)
+        GPIO.output(humidifier_pin, GPIO.LOW)
+    
+    elif humidity_average > humidity_limit_upper:
+        print("humidity too high, fans on and humidifier off.")
+        GPIO.output(fan_pin, GPIO.LOW)
+        GPIO.output(humidifier_pin, GPIO.HIGH)
+    
+    elif humidity_average < humidity_limit_lower:
+        print("humidity too low, fans off and humidifier on.")
+        GPIO.output(fan_pin, GPIO.HIGH)
+        GPIO.output(humidifier_pin, GPIO.LOW)
+    
+    else:
+        print("temperature and humidity juuuuuust right")
+        sleep_greenhouse(pins)
     
     return None
 

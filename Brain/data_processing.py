@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from InfluxDB_data_upload import InfluxDB_data_upload
+#from InfluxDB_data_upload import InfluxDB_data_upload
 from collect_data import collect_data
 
 #function filters and averages data gathered from sensor. also uploads to InfluxDB.

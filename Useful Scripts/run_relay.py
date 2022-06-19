@@ -17,8 +17,8 @@ def run_relay(run_time=1200):
     #GPIO.output(13, GPIO.HIGH)
 
     #using GPIO pin 19 to active humidifier
-    GPIO.setup(19, GPIO.OUT)
-    GPIO.output(19, GPIO.HIGH)
+    #GPIO.setup(19, GPIO.OUT)
+    #GPIO.output(19, GPIO.HIGH)
 
     #using GPIO pin 26 to activate fans
     GPIO.setup(26, GPIO.OUT)
@@ -29,7 +29,7 @@ def run_relay(run_time=1200):
         GPIO.output(26, GPIO.LOW)
         print("relay 1 on")
 
-        GPIO.output(19, GPIO.LOW)
+        #GPIO.output(19, GPIO.LOW)
         print("relay 3 on")
         time.sleep(run_time)
 
