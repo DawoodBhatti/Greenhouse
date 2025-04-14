@@ -6,7 +6,7 @@ from time import sleep
 from data_processing import data_processing
 
 #main script which can be run to take sensor readings, but also to 
-#control fans, heaters and LED components in the greenhouse/shroomhouse
+#control fans, heaters and LED components in the greenhouse
 def run_greenhouse():
 
     #define variables, GPIO pin useage and GPIO numbering convention
